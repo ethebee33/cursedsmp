@@ -9,6 +9,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class random {
     public static void Random(JavaPlugin plugin) {
         fireTickEvent(plugin);
+        fireInitEvent(plugin);
     }
 
     public static void fireTickEvent(JavaPlugin plugin) {

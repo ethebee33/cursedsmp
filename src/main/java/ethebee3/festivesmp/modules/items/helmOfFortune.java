@@ -25,7 +25,7 @@ public class helmOfFortune implements OnInit, OnBlockBreakEvent, OnEntityDamageE
 
     @Override
     public void onInit(onInit event) {
-        key = new NamespacedKey(event.getPlugin(), "helmoffortune");
+        key = new NamespacedKey(event.getPlugin(), "helmoffortune:t1");
     }
 
     @Override
@@ -60,11 +60,3 @@ public class helmOfFortune implements OnInit, OnBlockBreakEvent, OnEntityDamageE
         }
     }
 }
-/*
-ab
-ac
-ad
-bc
-bd
-cd
-*/
