@@ -1,0 +1,5 @@
+name: festivesmpPlugin
+version: '1.3'
+main: ethebee3.festivesmp.Main
+api-version: '1.21'
+
