@@ -7,13 +7,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 
-public interface OnInit extends listener {
-    void onInit(onInit event);
+public interface OnDeInit extends listener {
+    void onDeInit(onDeInit event);
 
-    class onInit extends cancelEvent<OnInit> {
+    class onDeInit extends cancelEvent<OnDeInit> {
         private final JavaPlugin event;
 
-        public onInit(JavaPlugin event) {
+        public onDeInit(JavaPlugin event) {
             this.event = event;
         }
 
@@ -22,16 +22,16 @@ public interface OnInit extends listener {
         }
 
         @Override
-        public void fire(ArrayList<OnInit> listeners) {
+        public void fire(ArrayList<OnDeInit> listeners) {
             getPlugin().getLogger().info("fired oninit");
-            for (OnInit listener : listeners) {
-                listener.onInit(this);
+            for (OnDeInit listener : listeners) {
+                listener.onDeInit(this);
             }
         }
 
         @Override
-        public Class<OnInit> getListenerType() {
-            return OnInit.class;
+        public Class<OnDeInit> getListenerType() {
+            return OnDeInit.class;
         }
     }
 }

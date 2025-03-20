@@ -2,11 +2,11 @@ package ethebee3.basicUtils.event.events.block;
 
 import ethebee3.basicUtils.event.cancelEvent;
 import ethebee3.basicUtils.event.listener;
-import org.bukkit.event.block.BlockEvent;
 
 import java.util.ArrayList;
 
-public interface OnBlockEvent extends listener {
+public interface OnBlockEvent /*extends listener*/ {
+    /*
     void onBlockEvent(onBlockEvent event);
 
     class onBlockEvent extends cancelEvent<OnBlockEvent> {
@@ -31,5 +31,13 @@ public interface OnBlockEvent extends listener {
         public Class<OnBlockEvent> getListenerType() {
             return OnBlockEvent.class;
         }
+
+        public static HandlerList getHandlerList() {
+            return handlerList;
+        }
+
+        private static final HandlerList handlerList = new HandlerList();
     }
+
+     */
 }

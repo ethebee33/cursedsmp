@@ -1,4 +1,4 @@
-package ethebee3.festivesmp.utils.ChatUtils.color;
+package ethebee3.basicUtils.utils.ChatUtils.color;
 
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Color;

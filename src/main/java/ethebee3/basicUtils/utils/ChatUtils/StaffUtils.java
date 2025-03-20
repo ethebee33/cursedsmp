@@ -1,6 +1,6 @@
-package ethebee3.festivesmp.utils.ChatUtils;
+package ethebee3.basicUtils.utils.ChatUtils;
 
-import ethebee3.festivesmp.utils.chatUtils;
+import ethebee3.basicUtils.utils.chatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;

@@ -6,7 +6,8 @@ import org.bukkit.event.entity.EntityCreatePortalEvent;
 
 import java.util.ArrayList;
 
-public interface OnEntityCreatePortalEvent extends listener {
+public interface OnEntityCreatePortalEvent /*extends listener*/ {
+    /*
     void onEntityCreatePortalEvent(onEntityCreatePortalEvent event);
 
     class onEntityCreatePortalEvent extends cancelEvent<OnEntityCreatePortalEvent> {
@@ -32,4 +33,5 @@ public interface OnEntityCreatePortalEvent extends listener {
             return OnEntityCreatePortalEvent.class;
         }
     }
+    */
 }

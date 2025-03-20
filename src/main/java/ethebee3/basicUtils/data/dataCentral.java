@@ -1,6 +1,6 @@
 package ethebee3.basicUtils.data;
 
-import ethebee3.festivesmp.Main;
+import ethebee3.cursedsmp.Main;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
