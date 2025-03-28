@@ -1,10 +1,10 @@
 package ethebee3.cursedsmp.modules.items;
 
+import ethebee3.basicUtils.Main2;
 import ethebee3.basicUtils.event.events.entity.OnEntityDamageByEntityEvent;
 import ethebee3.basicUtils.event.events.player.OnPlayerMoveEvent;
 import ethebee3.basicUtils.event.events.random.OnInit;
-import ethebee3.basicUtils.event.events.time.OnSecond;
-import ethebee3.basicUtils.event.events.time.OnTick;
+import ethebee3.basicUtils.event.events.random.OnTick;
 import ethebee3.basicUtils.utils.randUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -19,14 +19,20 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.HashMap;
 import java.util.Map;
 
-public class gauntletOfStrength implements OnInit, OnSecond, OnEntityDamageByEntityEvent, OnPlayerMoveEvent {
-    public gauntletOfStrength() {}
+public class gauntletOfStrength implements OnInit, OnTick, OnEntityDamageByEntityEvent, OnPlayerMoveEvent {
+    public gauntletOfStrength() {
+        Main2.getEventManager().add(OnInit.class, this);
+        Main2.getEventManager().add(OnTick.class, this);
+        Main2.getEventManager().add(OnEntityDamageByEntityEvent.class, this);
+        Main2.getEventManager().add(OnPlayerMoveEvent.class, this);
+    }
 
     public static JavaPlugin Plugin;
     public static NamespacedKey keyt1;
     public static NamespacedKey keyt2;
     public static NamespacedKey keyt3;
     public static Map<Player, Integer> stunMap = new HashMap<>();
+    public int tick;
 
     @Override
     public void onInit(onInit event) {
@@ -34,23 +40,29 @@ public class gauntletOfStrength implements OnInit, OnSecond, OnEntityDamageByEnt
         keyt1 = new NamespacedKey(Plugin, "gauntletofstrengtht1");
         keyt2 = new NamespacedKey(Plugin, "gauntletofstrengtht2");
         keyt3 = new NamespacedKey(Plugin, "gauntletofstrengtht3");
+        Bukkit.getLogger().info("Initialized NamespacedKeys: " + keyt1 + ", " + keyt2 + ", " + keyt3);
     }
 
     @Override
-    public void onSecond(onSecond event) {
-        for(Player player : Bukkit.getOnlinePlayers()) {
-            if (player.getInventory().getItemInOffHand().getItemMeta().getPersistentDataContainer().has(keyt2)
-                || player.getInventory().getItemInOffHand().getItemMeta().getPersistentDataContainer().has(keyt3)) {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 22, 1));
+    public void onTick(onTick event) {
+        if (tick == 20) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                if (player.getInventory().getItemInOffHand().getItemMeta().getPersistentDataContainer().has(keyt2)
+                        || player.getInventory().getItemInOffHand().getItemMeta().getPersistentDataContainer().has(keyt3)) {
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 22, 1));
+                }
             }
-        }
 
-        for(Player victim : stunMap.keySet()) {
-            if (stunMap.get(victim) > 1) {
-                stunMap.replace(victim, stunMap.get(victim) - 1);
-            } else {
-                stunMap.remove(victim);
+            for (Player victim : stunMap.keySet()) {
+                if (stunMap.get(victim) > 1) {
+                    stunMap.replace(victim, stunMap.get(victim) - 1);
+                } else {
+                    stunMap.remove(victim);
+                }
             }
+            tick = 0;
+        } else {
+            tick++;
         }
     }
 

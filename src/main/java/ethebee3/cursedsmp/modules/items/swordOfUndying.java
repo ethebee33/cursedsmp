@@ -1,5 +1,6 @@
 package ethebee3.cursedsmp.modules.items;
 
+import ethebee3.basicUtils.Main2;
 import ethebee3.basicUtils.event.events.entity.OnEntityDamageByEntityEvent;
 import ethebee3.basicUtils.event.events.random.OnInit;
 import ethebee3.basicUtils.event.events.time.OnTick;
@@ -21,7 +22,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class swordOfUndying implements OnInit, OnTick, OnEntityDamageByEntityEvent{
-    public swordOfUndying() {}
+    public swordOfUndying() {
+        Main2.getEventManager().add(OnInit.class, this);
+        Main2.getEventManager().add(OnTick.class, this);
+        Main2.getEventManager().add(OnEntityDamageByEntityEvent.class, this);
+    }
 
     public static JavaPlugin Plugin;
     public static NamespacedKey keyt1;
@@ -37,6 +42,7 @@ public class swordOfUndying implements OnInit, OnTick, OnEntityDamageByEntityEve
         keyt1 = new NamespacedKey(Plugin, "swordofundyingt1");
         keyt2 = new NamespacedKey(Plugin, "swordofundyingt2");
         keyt3 = new NamespacedKey(Plugin, "swordofundyingt3");
+        Bukkit.getLogger().info("Initialized NamespacedKeys: " + keyt1 + ", " + keyt2 + ", " + keyt3);
     }
 
     @Override
@@ -63,13 +69,17 @@ public class swordOfUndying implements OnInit, OnTick, OnEntityDamageByEntityEve
         if (!t1.containsKey(player)) {
             t1.put(player, 0);
         }
-        if (!player.hasPotionEffect(PotionEffectType.REGENERATION) && player.getHealth() < 5) {
+        if (!player.hasPotionEffect(PotionEffectType.REGENERATION) && player.getHealth() < 6) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 5, 3));
         }
         if (t1.get(player) == 0) {
             t1.replace(player, 0, 200);
-            if (player.getFoodLevel() > 1) {
-                player.setFoodLevel(player.getFoodLevel() - 1);
+            if (player.getSaturation() > 1) {
+                player.setSaturation(player.getFoodLevel() - 1);
+            } else {
+                if (player.getFoodLevel() > 1) {
+                    player.setFoodLevel(player.getFoodLevel() - 1);
+                }
             }
         } else {
             t1.replace(player, t1.get(player), t1.get(player) - 1);
@@ -80,13 +90,17 @@ public class swordOfUndying implements OnInit, OnTick, OnEntityDamageByEntityEve
         if (!t2.containsKey(player)) {
             t2.put(player, 0);
         }
-        if (!player.hasPotionEffect(PotionEffectType.REGENERATION) && player.getHealth() < 5) {
+        if (!player.hasPotionEffect(PotionEffectType.REGENERATION) && player.getHealth() < 6) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 5, 3));
         }
         if (t2.get(player) == 0) {
             t2.replace(player, 0, 100);
-            if (player.getFoodLevel() > 1) {
-                player.setFoodLevel(player.getFoodLevel() - 1);
+            if (player.getSaturation() > 1) {
+                player.setSaturation(player.getFoodLevel() - 1);
+            } else {
+                if (player.getFoodLevel() > 1) {
+                    player.setFoodLevel(player.getFoodLevel() - 1);
+                }
             }
         } else {
             t2.replace(player, t2.get(player), t2.get(player) - 1);
@@ -97,13 +111,17 @@ public class swordOfUndying implements OnInit, OnTick, OnEntityDamageByEntityEve
         if (!t3.containsKey(player)) {
             t3.put(player, 0);
         }
-        if (!player.hasPotionEffect(PotionEffectType.REGENERATION) && player.getHealth() < 5) {
+        if (!player.hasPotionEffect(PotionEffectType.REGENERATION) && player.getHealth() < 6) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 5, 3));
         }
         if (t3.get(player) == 0) {
             t3.replace(player, 0, 100);
-            if (player.getFoodLevel() > 1) {
-                player.setFoodLevel(player.getFoodLevel() - 1);
+            if (player.getSaturation() > 1) {
+                player.setSaturation(player.getFoodLevel() - 1);
+            } else {
+                if (player.getFoodLevel() > 1) {
+                    player.setFoodLevel(player.getFoodLevel() - 1);
+                }
             }
         } else {
             t3.replace(player, t3.get(player), t3.get(player) - 1);

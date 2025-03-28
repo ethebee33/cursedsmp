@@ -1,6 +1,6 @@
 package ethebee3.basicUtils.event.eventInit.events;
 
-import ethebee3.basicUtils.event.events.time.OnSecond;
+import ethebee3.basicUtils.event.events.eventManager;
 import ethebee3.basicUtils.event.events.time.OnTick;
 import ethebee3.basicUtils.event.events.random.OnInit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,7 +17,6 @@ public class random {
                 fireInitEvent(plugin);
             }
         }.runTaskLater(plugin, 1);
-        new Time(plugin);
     }
 
     public static void fireTickEvent(JavaPlugin plugin) {
@@ -34,26 +33,7 @@ public class random {
     public static void fireInitEvent(JavaPlugin plugin) {
         plugin.getLogger().info("loaded onInit");
         OnInit.onInit event = new OnInit.onInit(plugin);
-        getEventManager().fire(event);
+        eventManager.fire(event);
     }
 
-    public static class Time implements OnTick {
-        JavaPlugin plugin;
-        int currentTick = 0;
-
-        public Time(JavaPlugin plugin) {
-            this.plugin = plugin;
-        }
-
-        @Override
-        public void onTick(onTick event) {
-            if (currentTick == 20) {
-                OnSecond.onSecond event2 = new OnSecond.onSecond(plugin);
-                getEventManager().fire(event2);
-                currentTick = 0;
-            } else {
-                currentTick++;
-            }
-        }
-    }
 }

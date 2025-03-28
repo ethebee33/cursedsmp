@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Init {
     public Init(JavaPlugin plugin) {
+        System.out.println("gay");
         plugin.getServer().getPluginManager().registerEvents(new block(), plugin);
         plugin.getServer().getPluginManager().registerEvents(new player(), plugin);
         plugin.getServer().getPluginManager().registerEvents(new entity(), plugin);

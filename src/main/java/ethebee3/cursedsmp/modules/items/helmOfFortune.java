@@ -1,10 +1,12 @@
 package ethebee3.cursedsmp.modules.items;
 
+import ethebee3.basicUtils.Main2;
 import ethebee3.basicUtils.event.events.block.OnBlockBreakEvent;
 import ethebee3.basicUtils.event.events.entity.OnEntityDamageByEntityEvent;
 import ethebee3.basicUtils.event.events.entity.OnEntityDamageEvent;
 import ethebee3.basicUtils.event.events.random.OnInit;
 import ethebee3.basicUtils.utils.randUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -29,7 +31,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.*;
 
 public class helmOfFortune implements OnInit, OnBlockBreakEvent, OnEntityDamageByEntityEvent, OnEntityDamageEvent {
-
+    public helmOfFortune() {
+        Main2.getEventManager().add(OnBlockBreakEvent.class, this);
+        Main2.getEventManager().add(OnEntityDamageByEntityEvent.class, this);
+        Main2.getEventManager().add(OnEntityDamageEvent.class, this);
+        Main2.getEventManager().add(OnInit.class, this);
+    }
     // Plugin and NamespacedKeys
     public static JavaPlugin Plugin;
     public static NamespacedKey keyt1;
@@ -37,14 +44,9 @@ public class helmOfFortune implements OnInit, OnBlockBreakEvent, OnEntityDamageB
     public static NamespacedKey keyt3;
     public static NamespacedKey healthChangeKey;
 
-    // Attribute Modifier for Helm of Fortune
-    public static AttributeModifier attributeModifier;
-
     // Maps for tracking damage changes and item drops
     public static Map<Player, Double> map = new HashMap<>();
     public static Map<Integer, ItemStack> itemmap = new HashMap<>();
-
-    public helmOfFortune() {}
 
     @Override
     public void onInit(onInit event) {
@@ -61,13 +63,7 @@ public class helmOfFortune implements OnInit, OnBlockBreakEvent, OnEntityDamageB
         itemmap.put(2, new ItemStack(Material.GOLD_INGOT));
         itemmap.put(3, new ItemStack(Material.IRON_INGOT));
 
-        // Initialize attribute modifier for Helm of Fortune
-        attributeModifier = new AttributeModifier(
-                healthChangeKey,
-                6.0,
-                AttributeModifier.Operation.ADD_NUMBER,
-                EquipmentSlotGroup.HEAD
-        );
+        Bukkit.getLogger().info("Initialized NamespacedKeys: " + keyt1 + ", " + keyt2 + ", " + keyt3);
     }
 
     // Handle block break event to apply fortune-related effects
