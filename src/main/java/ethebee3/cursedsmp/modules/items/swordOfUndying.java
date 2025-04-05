@@ -51,82 +51,40 @@ public class swordOfUndying implements OnInit, OnTick, OnEntityDamageByEntityEve
             ItemMeta meta = player.getInventory().getItemInMainHand().getItemMeta();
             if (meta != null) {
                 if (meta.getPersistentDataContainer().has(keyt1, PersistentDataType.STRING)) {
-                    handleSwordTickT1(player);
+                    if (!player.hasPotionEffect(PotionEffectType.REGENERATION) && player.getHealth() < 6) {
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 5, 3));
+                    }
+                    if (!player.hasPotionEffect(PotionEffectType.HUNGER)) {
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 5, 5));
+                    }
+                    break;
                 }
 
                 if (meta.getPersistentDataContainer().has(keyt2, PersistentDataType.STRING)) {
-                    handleSwordTickT2(player);
+                    if (!player.hasPotionEffect(PotionEffectType.REGENERATION) && player.getHealth() < 6) {
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 5, 3));
+                    }
+                    if (!player.hasPotionEffect(PotionEffectType.HUNGER)) {
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 5, 7));
+                    }
+                    break;
                 }
 
                 if (meta.getPersistentDataContainer().has(keyt3, PersistentDataType.STRING)) {
-                    handleSwordTickT3(player);
+                    if (!player.hasPotionEffect(PotionEffectType.REGENERATION) && player.getHealth() < 6) {
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 5, 3));
+                    }
+                    if (!player.hasPotionEffect(PotionEffectType.HUNGER)) {
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 5, 10));
+                    }
+                    break;
                 }
+
             }
         }
     }
 
-    public static void handleSwordTickT1(Player player) {
-        if (!t1.containsKey(player)) {
-            t1.put(player, 0);
-        }
-        if (!player.hasPotionEffect(PotionEffectType.REGENERATION) && player.getHealth() < 6) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 5, 3));
-        }
-        if (t1.get(player) == 0) {
-            t1.replace(player, 0, 200);
-            if (player.getSaturation() > 1) {
-                player.setSaturation(player.getFoodLevel() - 1);
-            } else {
-                if (player.getFoodLevel() > 1) {
-                    player.setFoodLevel(player.getFoodLevel() - 1);
-                }
-            }
-        } else {
-            t1.replace(player, t1.get(player), t1.get(player) - 1);
-        }
-    }
 
-    public static void handleSwordTickT2(Player player) {
-        if (!t2.containsKey(player)) {
-            t2.put(player, 0);
-        }
-        if (!player.hasPotionEffect(PotionEffectType.REGENERATION) && player.getHealth() < 6) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 5, 3));
-        }
-        if (t2.get(player) == 0) {
-            t2.replace(player, 0, 100);
-            if (player.getSaturation() > 1) {
-                player.setSaturation(player.getFoodLevel() - 1);
-            } else {
-                if (player.getFoodLevel() > 1) {
-                    player.setFoodLevel(player.getFoodLevel() - 1);
-                }
-            }
-        } else {
-            t2.replace(player, t2.get(player), t2.get(player) - 1);
-        }
-    }
-
-    public static void handleSwordTickT3(Player player) {
-        if (!t3.containsKey(player)) {
-            t3.put(player, 0);
-        }
-        if (!player.hasPotionEffect(PotionEffectType.REGENERATION) && player.getHealth() < 6) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 5, 3));
-        }
-        if (t3.get(player) == 0) {
-            t3.replace(player, 0, 100);
-            if (player.getSaturation() > 1) {
-                player.setSaturation(player.getFoodLevel() - 1);
-            } else {
-                if (player.getFoodLevel() > 1) {
-                    player.setFoodLevel(player.getFoodLevel() - 1);
-                }
-            }
-        } else {
-            t3.replace(player, t3.get(player), t3.get(player) - 1);
-        }
-    }
 
     @Override
     public void onEntityDamageByEntityEvent(onEntityDamageByEntityEvent event) {

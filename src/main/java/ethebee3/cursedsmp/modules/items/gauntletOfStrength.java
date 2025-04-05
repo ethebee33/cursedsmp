@@ -2,6 +2,7 @@ package ethebee3.cursedsmp.modules.items;
 
 import ethebee3.basicUtils.Main2;
 import ethebee3.basicUtils.event.events.entity.OnEntityDamageByEntityEvent;
+import ethebee3.basicUtils.event.events.entity.OnPlayerDeathEvent;
 import ethebee3.basicUtils.event.events.player.OnPlayerMoveEvent;
 import ethebee3.basicUtils.event.events.random.OnInit;
 import ethebee3.basicUtils.event.events.random.OnTick;
@@ -19,12 +20,13 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.HashMap;
 import java.util.Map;
 
-public class gauntletOfStrength implements OnInit, OnTick, OnEntityDamageByEntityEvent, OnPlayerMoveEvent {
+public class gauntletOfStrength implements OnInit, OnTick, OnEntityDamageByEntityEvent, OnPlayerMoveEvent, OnPlayerDeathEvent {
     public gauntletOfStrength() {
         Main2.getEventManager().add(OnInit.class, this);
         Main2.getEventManager().add(OnTick.class, this);
         Main2.getEventManager().add(OnEntityDamageByEntityEvent.class, this);
         Main2.getEventManager().add(OnPlayerMoveEvent.class, this);
+        Main2.getEventManager().add(OnPlayerDeathEvent.class, this);
     }
 
     public static JavaPlugin Plugin;
@@ -64,6 +66,15 @@ public class gauntletOfStrength implements OnInit, OnTick, OnEntityDamageByEntit
         } else {
             tick++;
         }
+    }
+
+    @Override
+    public void onPlayerDeathEvent(onPlayerDeathEvent event) {
+        Player entity = event.getEvent().getEntity();
+        if (stunMap.containsKey(entity)) {
+            stunMap.remove(entity);
+        }
+
     }
 
     @EventHandler

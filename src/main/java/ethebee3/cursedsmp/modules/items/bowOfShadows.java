@@ -11,7 +11,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -26,6 +25,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class bowOfShadows implements OnInit, OnEntityShootBowEvent, OnEntityDamageByEntityEvent, OnDeInit {
     public bowOfShadows() {
@@ -42,7 +42,7 @@ public class bowOfShadows implements OnInit, OnEntityShootBowEvent, OnEntityDama
     public static NamespacedKey keyt3;
 
     // Maps to store relevant data for arrows, key mappings, and health reset mappings
-    static Map<Entity, Player> arrowmap = new HashMap<>();
+    static Map<UUID, Player> arrowmap = new HashMap<java.util.UUID, Player>();
     static Map<Entity, NamespacedKey> keymap = new HashMap<>();
     static ArrayList<Player> resetmap = new ArrayList<>();
 
@@ -67,15 +67,15 @@ public class bowOfShadows implements OnInit, OnEntityShootBowEvent, OnEntityDama
             // After, use the function corresponding to the key it has
             if (bow != null && bow.getItemMeta() != null) {
                 if (bow.getItemMeta().getPersistentDataContainer().has(keyt1)) {
-                    arrowmap.put(event2.getProjectile(), player);
+                    arrowmap.put(event2.getProjectile().getUniqueId(), player);
                     keymap.put(event2.getProjectile(), keyt1);
                 }
                 if (bow.getItemMeta().getPersistentDataContainer().has(keyt2)) {
-                    arrowmap.put(event2.getProjectile(), player);
+                    arrowmap.put(event2.getProjectile().getUniqueId(), player);
                     keymap.put(event2.getProjectile(), keyt2);
                 }
                 if (bow.getItemMeta().getPersistentDataContainer().has(keyt3)) {
-                    arrowmap.put(event2.getProjectile(), player);
+                    arrowmap.put(event2.getProjectile().getUniqueId(), player);
                     keymap.put(event2.getProjectile(), keyt3);
                 }
             }
@@ -87,7 +87,7 @@ public class bowOfShadows implements OnInit, OnEntityShootBowEvent, OnEntityDama
         EntityDamageByEntityEvent event2 = event.getEvent();
 
         // Check if the damager is an arrow and was shot by a player
-        if (arrowmap.containsKey(event2.getDamager())) {
+        if (arrowmap.containsKey(event2.getDamager().getUniqueId())) {
             Player attacker = arrowmap.get(event2.getDamager());
             Player victim = (Player) event2.getEntity();
 
@@ -117,6 +117,7 @@ public class bowOfShadows implements OnInit, OnEntityShootBowEvent, OnEntityDama
                 attacker.teleport(behindLocation);
                 attacker.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 5, 0));
                 event2.setDamage(0);
+                changeAndRegenerateHealth(attacker, -1, 5000);
                 new BukkitRunnable() {
                     @Override
                     public void run() {
@@ -177,7 +178,7 @@ public class bowOfShadows implements OnInit, OnEntityShootBowEvent, OnEntityDama
                 event2.setDamage(0);
                 applyDamage(4, victim);
                 victim.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 60, 0));
-                changeAndRegenerateHealth(attacker, -2, 5000);
+                changeAndRegenerateHealth(attacker, -3, 5000);
                 new BukkitRunnable() {
                     @Override
                     public void run() {
@@ -194,15 +195,21 @@ public class bowOfShadows implements OnInit, OnEntityShootBowEvent, OnEntityDama
 
     private void changeAndRegenerateHealth(Player player, double healthChange, long regenerationDelay) {
         resetmap.add(player);
-        double oldhealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
-        double newhealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() + healthChange;
-        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(newhealth);
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(oldhealth);
+        while (healthChange > 0) {
+            double oldhealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
+            double newhealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() + healthChange;
+            if (newhealth < 10) {
+                healthChange--;
+            } else {
+                player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(newhealth);
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(oldhealth);
+                    }
+                }.runTaskLater(Plugin, regenerationDelay);
             }
-        }.runTaskLater(Plugin, regenerationDelay);
+        }
     }
 
     private void applyDamage(int damage, Player player) {
